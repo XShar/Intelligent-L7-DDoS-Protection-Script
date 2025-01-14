@@ -139,12 +139,11 @@ The approach below shows how to automate toggling Cloudflare’s "Under Attack" 
 - **jq** – for processing JSON responses from Cloudflare (optional, but useful).
 
 **On Ubuntu/Debian:**
-```bash
+
 sudo apt update
 sudo apt install -y sysstat mailutils bc jq
 
 **On CentOS/RHEL:**
-```bash
 sudo yum install -y sysstat mailx bc jq
 
 2. Configure Nginx to provide metrics
@@ -194,7 +193,6 @@ Save it, for example, as /opt/scripts/cloudflare_load_monitor.sh. Don’t forget
 
 chmod +x /opt/scripts/cloudflare_load_monitor.sh
 
-```bash
 #!/bin/bash
 # cloudflare_load_monitor.sh
 #
@@ -356,8 +354,6 @@ Step 4: Creating a Supervisor Script
 We need to ensure the cloudflare_load_monitor.sh script is always running—even after crashes. The script below checks if the main monitoring script is running. If not, it restarts it with a high priority (nice -n -10).
 
 Save as /opt/scripts/monitor_cloudflare_monitor.sh:
-
-```bash
 
 #!/bin/bash
 # monitor_cloudflare_monitor.sh
