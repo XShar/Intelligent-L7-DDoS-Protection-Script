@@ -76,7 +76,7 @@ The approach below shows how to automate toggling Cloudflare’s "Under Attack" 
 ---
 
 ## Script Flow Diagram
-
+```
                 ┌─────────────────────┐
                 │      Сервер        │
                 │ (Nginx + система)  │
@@ -111,6 +111,7 @@ The approach below shows how to automate toggling Cloudflare’s "Under Attack" 
                                    ┌─────────────────────────┐
          (5) Отправка email  ─────▶│   Уведомления на почту  │
           (начало/конец атак)      └─────────────────────────┘
+```
 
 ### Explanation
 - **Server (Nginx + system):**  
@@ -150,7 +151,7 @@ sudo yum install -y sysstat mailx bc jq
 Enable the ngx_http_stub_status_module (usually built-in by default). Create a dedicated location for status.
 
 Example /etc/nginx/conf.d/status.conf (or you can place inside nginx.conf):
-
+```
 server {
     listen 127.0.0.1:80;
     server_name localhost;
@@ -161,6 +162,7 @@ server {
         deny all;           # Deny everyone else
     }
 }
+```
 
 Then reload Nginx:
 
@@ -169,6 +171,7 @@ sudo systemctl reload nginx
 You can now access metrics at: http://127.0.0.1/nginx_status
 
 Step 2: Getting Cloudflare API Token
+
 - Go to Cloudflare Dashboard:https://dash.cloudflare.com/profile/api-tokens
 - Click Create Custom Token.
 - Set Permissions to:
@@ -192,7 +195,7 @@ Exits if it sees the file /tmp/cloudflare_monitor_stop.
 Save it, for example, as /opt/scripts/cloudflare_load_monitor.sh. Don’t forget to make it executable:
 
 chmod +x /opt/scripts/cloudflare_load_monitor.sh
-
+```
 #!/bin/bash
 # cloudflare_load_monitor.sh
 #
@@ -327,21 +330,24 @@ while true; do
 
     sleep "$CHECK_INTERVAL"
 done
+```
 
 Key configuration parameters to adjust:
-
+```
 #### Cloudflare Settings ####
 CF_API_TOKEN="INSERT_YOUR_API_TOKEN"
 ZONE_ID="INSERT_YOUR_ZONE_ID"
 DEFAULT_SECURITY_LEVEL="medium"
 SECURITY_LEVEL_ATTACK="under_attack"
-
+```
+```
 #### Monitoring Settings ####
 CPU_THRESHOLD=90                  # CPU usage threshold in %
 CONN_THRESHOLD=2000               # Threshold for active connections
 CHECK_INTERVAL=10                 # Interval between checks
 ATTACK_DURATION=300               # Duration to hold "I'm Under Attack"
 NGINX_STATUS_URL="http://127.0.0.1/nginx_status"
+```
 
 Set appropriate values for your environment.
 
@@ -355,6 +361,7 @@ We need to ensure the cloudflare_load_monitor.sh script is always running—even
 
 Save as /opt/scripts/monitor_cloudflare_monitor.sh:
 
+```
 #!/bin/bash
 # monitor_cloudflare_monitor.sh
 #
@@ -382,6 +389,7 @@ if [ "$PROCESS_COUNT" -eq 0 ]; then
 else
     log "Monitoring script is already running (count: ${PROCESS_COUNT})."
 fi
+```
 
 Make it executable:
 
@@ -389,10 +397,11 @@ chmod +x /opt/scripts/monitor_cloudflare_monitor.sh
 
 Cron Job
 Add it to crontab to run every minute:
-
+```
 crontab -e
 
 * * * * * /opt/scripts/monitor_cloudflare_monitor.sh
+```
 
 This way, if the monitoring script ever crashes, it will be relaunched automatically within a minute.
 
@@ -400,7 +409,7 @@ Step 5: Log Rotation Setup
 To prevent /var/log/cloudflare_load_monitor.log from growing indefinitely, configure logrotate.
 
 Create /etc/logrotate.d/cloudflare_load_monitor with:
-
+```
 /var/log/cloudflare_load_monitor.log {
     daily
     rotate 7
@@ -412,6 +421,7 @@ Create /etc/logrotate.d/cloudflare_load_monitor with:
     postrotate
     endscript
 }
+```
 
 This will rotate the log daily, keeping up to 7 compressed archives.
 
