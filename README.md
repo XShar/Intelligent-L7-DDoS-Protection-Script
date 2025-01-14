@@ -436,3 +436,6 @@ Sends email alerts for start/end of the protection mode.
 
 Restarts itself if it crashes or is accidentally stopped.
 This solution helps mitigate L7 (application-level) DDoS attacks dynamically, without constantly challenging every visitor with CAPTCHAs or JavaScript checks. Feel free to adapt thresholds, durations, and notifications for your environment.
+
+### See forum
+https://ru-sfera.pw/threads/intellektualnyj-skript-dlja-zaschity-ot-ddos-na-l7.4833/
