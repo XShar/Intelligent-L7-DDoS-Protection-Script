@@ -78,39 +78,39 @@ The approach below shows how to automate toggling Cloudflare’s "Under Attack" 
 ## Script Flow Diagram
 ```
             ┌─────────────────────┐
-            │      Сервер        │
-            │ (Nginx + система)  │
-            └─────────┬──────────┘
+            │      Server         │
+            │ (Nginx + system)    │
+            └─────────┬───────────┘
                       │
-         (1) Сбор метрик (CPU, Nginx)
+         (1) Collect metrics (CPU, Nginx)
                       │
                       v
- ┌───────────────────────────────┐
- │  Скрипт cloudflare_load_monitor.sh  │
- │    (мониторинг + логика включения   │
- │      "Я под атакой" в Cloudflare)   │
- └─────────────────┬───────────────────┘
-                   │
-     (2) Проверка порогов CPU/Conn
-                   │
-                   │  Порог превышен?
-                   │
-     ┌────── Нет ──┴───────────────────┐
-     │                                 │
-     │Да                                v
-     v                       (3) Включаем under_attack
-┌─────────────────┐            через Cloudflare API
-│    Скрипт ждёт   │─────────────────────────────────────────┐
-│ ATTACK_DURATION  │                                         │
+ ┌─────────────────────────────────────────────┐
+ │  cloudflare_load_monitor.sh script         │
+ │   (monitoring + logic to enable            │
+ │    "I'm Under Attack" in Cloudflare)       │
+ └───────────────────┬────────────────────────┘
+                     │
+     (2) Check CPU/Conn thresholds
+                     │
+                     │  Threshold exceeded?
+                     │
+     ┌────── No ─────┴──────────────────────┐
+     │                                      │
+     │Yes                                   v
+     v                       (3) Enable under_attack
+┌─────────────────┐             via Cloudflare API
+│   Script waits   │─────────────────────────────────────────┐
+│  ATTACK_DURATION │                                         │
 └─────────────────┘                                         │
-                      (4) По истечении времени               │
-                         переводим режим обратно             │
-                             в DEFAULT_SECURITY_LEVEL         │
+                      (4) After time expires,                │
+                          revert mode back to                │
+                          DEFAULT_SECURITY_LEVEL             │
                                                               │
                                                               v
-                                   ┌─────────────────────────┐
-(5) Отправка email  ─────▶│   Уведомления на почту           │
- (начало/конец атак)       └─────────────────────────┘
+                               ┌───────────────────────────┐
+(5) Send email  ─────▶│  Email notifications (start/end) │
+                      └───────────────────────────┘
 
 ```
 
