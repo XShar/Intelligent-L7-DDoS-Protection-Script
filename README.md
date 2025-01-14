@@ -170,7 +170,7 @@ sudo systemctl reload nginx
 
 You can now access metrics at: http://127.0.0.1/nginx_status
 
-Step 2: Getting Cloudflare API Token
+### Step 2: Getting Cloudflare API Token
 
 - Go to Cloudflare Dashboard:https://dash.cloudflare.com/profile/api-tokens
 - Click Create Custom Token.
@@ -181,7 +181,7 @@ Step 2: Getting Cloudflare API Token
 - Create the token and copy it (you can only copy the full token once).
 - You also need the Zone ID of your domain. You can find it on the Overview page of your Cloudflare dashboard (right-hand panel).
 
-Step 3: Creating the Monitoring Script
+### Step 3: Creating the Monitoring Script
 
 Below is an example bash script that:
 
@@ -354,8 +354,7 @@ Set appropriate values for your environment.
 For example, if worker_processes = 3 and worker_connections = 768, the total maximum active connections are ~2304. You might set CONN_THRESHOLD=2000 to trigger the script before full saturation.
 CPU_THRESHOLD=90 means “trigger if CPU usage goes above 90%.”
 
-
-Step 4: Creating a Supervisor Script
+### Step 4: Creating a Supervisor Script
 
 We need to ensure the cloudflare_load_monitor.sh script is always running—even after crashes. The script below checks if the main monitoring script is running. If not, it restarts it with a high priority (nice -n -10).
 
@@ -405,7 +404,7 @@ crontab -e
 
 This way, if the monitoring script ever crashes, it will be relaunched automatically within a minute.
 
-Step 5: Log Rotation Setup
+### Step 5: Log Rotation Setup
 To prevent /var/log/cloudflare_load_monitor.log from growing indefinitely, configure logrotate.
 
 Create /etc/logrotate.d/cloudflare_load_monitor with:
@@ -425,7 +424,7 @@ Create /etc/logrotate.d/cloudflare_load_monitor with:
 
 This will rotate the log daily, keeping up to 7 compressed archives.
 
-Conclusion
+### Conclusion
 
 You now have an automated system that:
 
