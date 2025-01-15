@@ -443,19 +443,15 @@ https://ru-sfera.pw/threads/intellektualnyj-skript-dlja-zaschity-ot-ddos-na-l7.4
 ### UPDATE - 1
 
 It can still be modified:
-
 A check is performed every 10 seconds, but if it is detected that:
-
-    CPU usage > CPU_THRESHOLD 5 times in a row, protection is activated.
-
+   CPU usage > CPU_THRESHOLD 5 times in a row, protection is activated.
 This is a softer filter to prevent false positives.
 
 Under light load in a normal situation, you can set CPU_THRESHOLD=80, which will provide a buffer before activating protection.
 
-'''
-
+```
 #!/bin/bash
-# cloudflare_load_monitor.sh
+# cloudflare_load_monitor_v2.sh
 #
 # This script monitors the CPU load and the number of active Nginx connections.
 # If it detects that:
@@ -633,5 +629,4 @@ while true; do
 
     sleep "$CHECK_INTERVAL"
 done
-
-'''
+```
