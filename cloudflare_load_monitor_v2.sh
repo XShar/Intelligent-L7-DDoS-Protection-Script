@@ -26,7 +26,7 @@ ATTACK_DURATION=300                 # "under_attack" mode duration (seconds)
 NGINX_STATUS_URL="http://127.0.0.1/nginx_status"  # URL to retrieve Nginx status
 
 #### Notification Settings ####
-EMAIL_TO="info@ru-sfera.pw"         # email for notifications
+EMAIL_TO="notification_mail@example"         # email for notifications
 
 #### Logging ####
 LOG_FILE="/var/log/cloudflare_load_monitor.log"
