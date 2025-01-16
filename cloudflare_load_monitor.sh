@@ -64,7 +64,12 @@ get_cpu_usage() {
 get_nginx_conn() {
     local status
     status=$(curl -s "$NGINX_STATUS_URL")
-    echo "$status" | awk '/Active connections/ {print $3}'
+    if [ -z "$status" ] || [[ "$status" != *"Active connections:"* ]]; then
+        log "Unable to retrieve Nginx status. The worker_connections limit might be exceeded."
+        echo 9999
+    else
+        echo "$status" | awk '/Active connections/ {print $3}'
+    fi
 }
 
 # Check that necessary utilities exist
