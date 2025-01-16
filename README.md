@@ -646,7 +646,7 @@ It checks the number of connections to Apache; in this example, the protection i
 
 ```
 #!/bin/bash
-# cloudflare_load_monitorV2.sh
+# cloudflare_load_monitor_v3.sh
 #
 # This script monitors:
 #   1) CPU usage,
