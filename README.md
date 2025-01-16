@@ -262,8 +262,14 @@ get_cpu_usage() {
 get_nginx_conn() {
     local status
     status=$(curl -s "$NGINX_STATUS_URL")
-    echo "$status" | awk '/Active connections/ {print $3}'
+    if [ -z "$status" ] || [[ "$status" != *"Active connections:"* ]]; then
+        log "Unable to retrieve Nginx status. The worker_connections limit might be exceeded."
+        echo 9999
+    else
+        echo "$status" | awk '/Active connections/ {print $3}'
+    fi
 }
+
 
 # Check that necessary utilities exist
 if ! command -v mpstat >/dev/null 2>&1; then
@@ -524,13 +530,12 @@ get_cpu_usage() {
 get_nginx_conn() {
     local status
     status=$(curl -s "$NGINX_STATUS_URL")
-    # Sample output:
-    #   Active connections: 291
-    #   server accepts handled requests
-    #   19746 19746 31265
-    #   Reading: 5 Writing: 2 Waiting: 284
-    # Extract the first number from the line "Active connections: X"
-    echo "$status" | awk '/Active connections/ {print $3}'
+    if [ -z "$status" ] || [[ "$status" != *"Active connections:"* ]]; then
+        log "Unable to retrieve Nginx status. The worker_connections limit might be exceeded."
+        echo 9999
+    else
+        echo "$status" | awk '/Active connections/ {print $3}'
+    fi
 }
 
 # Check required commands
@@ -735,13 +740,12 @@ get_cpu_usage() {
 get_nginx_conn() {
     local status
     status=$(curl -s "$NGINX_STATUS_URL")
-    # Example output:
-    #   Active connections: 291
-    #   server accepts handled requests
-    #   19746 19746 31265
-    #   Reading: 5 Writing: 2 Waiting: 284
-    # Extract the first number from the "Active connections:" line.
-    echo "$status" | awk '/Active connections/ {print $3}'
+    if [ -z "$status" ] || [[ "$status" != *"Active connections:"* ]]; then
+        log "Unable to retrieve Nginx status. The worker_connections limit might be exceeded."
+        echo 9999
+    else
+        echo "$status" | awk '/Active connections/ {print $3}'
+    fi
 }
 
 # Function to get the number of active Apache connections without mod_status
