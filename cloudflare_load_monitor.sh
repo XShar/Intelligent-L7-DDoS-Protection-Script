@@ -60,13 +60,16 @@ get_cpu_usage() {
     fi
 }
 
-# Get number of active Nginx connections
+# Function to get the number of active Nginx connections.
+# Assumes that Nginx is configured with ngx_http_stub_status_module.
+# If the status page is unavailable (e.g. due to exhausted worker_connections),
+# the function returns CONN_THRESHOLD+1 to trigger protection.
 get_nginx_conn() {
     local status
     status=$(curl -s "$NGINX_STATUS_URL")
     if [ -z "$status" ] || [[ "$status" != *"Active connections:"* ]]; then
-        log "Unable to retrieve Nginx status. The worker_connections limit might be exceeded."
-        echo 9999
+        log "Unable to retrieve Nginx status. Possibly worker_connections are exhausted."
+        echo $((CONN_THRESHOLD + 1))
     else
         echo "$status" | awk '/Active connections/ {print $3}'
     fi
