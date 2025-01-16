@@ -651,7 +651,7 @@ It checks the number of connections to Apache; in this example, the protection i
 # This script monitors:
 #   1) CPU usage,
 #   2) The number of active Nginx connections (via ngx_http_stub_status),
-#   3) The number of active Apache connections (without using mod_status).
+#   3) The number of active Apache connections.
 #
 # If any of the following conditions is met:
 #   - CPU usage > CPU_THRESHOLD for 5 consecutive checks, or
@@ -748,7 +748,7 @@ get_nginx_conn() {
     fi
 }
 
-# Function to get the number of active Apache connections without mod_status
+# Function to get the number of active Apache connections
 get_apache_conn() {
     # Uses ss to count established (ESTAB) connections on the Apache port.
     # Requires that Apache is listening on 127.0.0.1:APACHE_PORT and its processes are named appropriately.
