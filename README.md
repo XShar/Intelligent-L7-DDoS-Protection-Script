@@ -876,3 +876,4 @@ while true; do
     sleep "$CHECK_INTERVAL"
 done
 ```
+### CHECK_INTERVAL=10 can also be changed, for example, to CHECK_INTERVAL=3.
