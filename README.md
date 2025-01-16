@@ -876,4 +876,13 @@ while true; do
     sleep "$CHECK_INTERVAL"
 done
 ```
-### CHECK_INTERVAL=10 can also be changed, for example, to CHECK_INTERVAL=3.
+### CHECK_INTERVAL=10 can also be changed, for example to CHECK_INTERVAL=3.
+And this part of the code can also be modified:
+```
+# If threshold exceeded 5 times in a row, set TRIGGER_CPU
+if [ "$CPU_EXCEED_COUNT" -ge 5 ]; then
+```
+### Instead of 5, you can use a higher number if CHECK_INTERVAL is smaller.
+Overall, the script is configurable.
+
+### Good luck!
