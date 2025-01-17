@@ -28,7 +28,7 @@ LOG_FILE="/var/log/cloudflare_load_monitor.log"
 
 # Logging function
 log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE" >&2
 }
 
 # Send email function
