@@ -226,7 +226,7 @@ LOG_FILE="/var/log/cloudflare_load_monitor.log"
 
 # Logging function
 log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE" >&2
 }
 
 # Send email function
@@ -404,11 +404,11 @@ Make it executable:
 chmod +x /opt/scripts/monitor_cloudflare_monitor.sh
 
 Cron Job
-Add it to crontab to run every minute:
+Add it to crontab to run every minute (Prio -10):
 ```
 crontab -e
 
-* * * * * /opt/scripts/monitor_cloudflare_monitor.sh
+* * * * * /usr/bin/nice -n -10 /bin/bash /var/local/monitor_cloudflare_monitor.sh
 ```
 
 This way, if the monitoring script ever crashes, it will be relaunched automatically within a minute.
@@ -493,7 +493,7 @@ LOG_FILE="/var/log/cloudflare_load_monitor.log"
 
 # Logging function: output to log file and console
 log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE" >&2
 }
 
 # Email sending function
@@ -705,7 +705,7 @@ LOG_FILE="/var/log/cloudflare_load_monitor.log"
 
 # Logging function: outputs message to the log file and the console
 log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE" >&2
 }
 
 # Email sending function
