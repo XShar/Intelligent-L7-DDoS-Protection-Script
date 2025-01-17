@@ -54,7 +54,7 @@ LOG_FILE="/var/log/cloudflare_load_monitor.log"
 
 # Logging function: outputs message to the log file and the console
 log() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1" | tee -a "$LOG_FILE" >&2
 }
 
 # Email sending function
